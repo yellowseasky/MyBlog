@@ -14,3 +14,7 @@ a {
 a:hover {
   color: #6b9eee;
 }
+ul {
+  list-style: none;
+  padding: 0;
+}
