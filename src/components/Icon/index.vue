@@ -42,6 +42,7 @@ export default {
 <style scoped>
 @import "//at.alicdn.com/t/font_2164449_nalfgtq7il.css";
 .iconfont {
+  /* inherit是继承父元素样式 */
   color: inherit;
   font-size: inherit;
 }

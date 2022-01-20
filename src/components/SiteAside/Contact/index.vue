@@ -1,7 +1,7 @@
 <template>
   <ul class="content-container">
     <li>
-      <a href="">
+      <a>
         <div class="icon">
           <Icon type="github"/>
         </div>
@@ -17,7 +17,7 @@
       </a>
     </li>
     <li>
-      <a href="">
+      <a href="tencent://message/?Menu=yes&uin=1352906014&Service=300&sigT=45a1e5847943b64c6ff3990f8a9e644d2b31356cb0b4ac6b24663a3c8dd0f8aa12a595b1714f9d45">
         <div class="icon">
           <Icon type="qq"/>
         </div>
@@ -28,7 +28,7 @@
       </div>
     </li>
     <li>
-      <a href="">
+      <a>
         <div class="icon weixin">
           <Icon type="weixin"/>
         </div>

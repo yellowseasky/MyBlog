@@ -56,11 +56,11 @@ export default {
     isSelected(item) {
       var link = item.link.toLowerCase(); // 菜单的链接地址
       var curPathname = location.pathname.toLowerCase(); // 当前浏览器的访问路径
+      // 路劲匹配到文章,路劲匹配到/blog开头就可以
       if (item.startWith) {
         return curPathname.startsWith(link);
-      } else {
-        return curPathname === link;
       }
+      return curPathname === link;
     }
   }
 }
@@ -74,7 +74,7 @@ export default {
   margin: 24px 0;
   a {
     &.selected {
-      background: darken(@words, 3%);
+      background: darken(@words, 3%); // 元素加深
     }
     height: 45px;
     display: flex;
