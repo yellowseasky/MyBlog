@@ -15,12 +15,14 @@ export default function (options = {}) {
   const type = options.type || 'info';
   const duration = options.duration || 2000;
   const container = options.container || document.body
+
   // 创建生成弹出框的dom元素
   const div = document.createElement("div");
   // 获取icon组件的dom元素
   const iconDom = getComponentRootDom(Icon, {
     type 
   })
+  // 
   div.innerHTML = `<span class=${styles.icon}>${iconDom.outerHTML}</span><div>${content}</div>`;
   
   // 设置样式
@@ -29,13 +31,16 @@ export default function (options = {}) {
 
   // 将div添加到容器中
   // 容器的position是否被改动过
-  if(getComputedStyle(container).position === "static") {
-    container.style.position = "relative";
+  if(options.container) {
+    if(getComputedStyle(container).position === "static") {
+      container.style.position = "relative";
+    }
   }
+  
   container.appendChild(div);
 
   // 浏览器强行渲染
-  div.clientHeight;
+  div.clientHeight; // 导致reflow重排
 
   // div回归正常的位置
   div.style.opacity = 1;
@@ -52,7 +57,7 @@ export default function (options = {}) {
         // 运行回调函数
         options.callback && options.callback();
       },
-      {once: true}
+      {once: true} // 只运行一次
     )
   }, duration);
 
