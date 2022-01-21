@@ -3,11 +3,11 @@
     <Layout>
       <template #left>
         <div class="left">
-            <Side />
+          <Side />
         </div>
       </template>
       <template #default>
-        主区域
+        <RouterView />
       </template>
     </Layout>
   </div>

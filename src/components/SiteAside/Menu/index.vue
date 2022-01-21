@@ -1,18 +1,18 @@
 <template>
   <nav class="menu-container">
-    <a
+    <!-- active-class修改vue点击对应菜单栏的类; exact为true意思为精确匹配路由,false为模糊匹配; :to="{name: item.name}"为命名路由,对应路由的命名-->
+    <RouterLink
+      :exact="item.exact"
       v-for="item in menuList"
       :key="item.link"
-      :href="item.link"
-      :class="{
-        selected: isSelected(item),
-      }"
+      :to="{name: item.name}"
+      active-class = "active"
     >
       <div class="icon">
         <Icon :type="item.type"/>
       </div>
       <span>{{item.text}}</span>
-    </a>
+    </RouterLink>
   </nav>
 </template>
 
@@ -23,31 +23,40 @@ export default {
   data() {
     return {
       menuList: [
-        { 
+        {
+          name: 'Home', // 使用了命名路由
           link: "/",
           type: 'home',
-          text: '首页'
+          text: '首页',
+          exact: true
         },
         {
+          name: 'Blog',
           link: "/blog",
           type: 'blog',
           text: '文章',
-          startWith: true, // 只要当前路径以link开头，当前菜单就是选中的
+          exact: false
         },
         {
+          name: 'About',
           link: "/about",
           type: 'info',
-          text: '关于我'
+          text: '关于我',
+          exact: true
         },
         {
+          name: 'Project',
           link: "/project",
           type: 'code',
-          text: '项目&效果'
+          text: '项目&效果',
+          exact: true
         },
         {
+          name: 'Message',
           link: "/message",
           type: 'chat',
-          text: '留言板'
+          text: '留言板',
+          exact: true
         }
       ]
     }
@@ -73,7 +82,7 @@ export default {
   color: @gray;
   margin: 24px 0;
   a {
-    &.selected {
+    &.active {
       background: darken(@words, 3%); // 元素加深
     }
     height: 45px;
