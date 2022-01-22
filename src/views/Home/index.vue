@@ -1,9 +1,9 @@
 <template>
-  <div class="home-container" ref="container">
+  <div class="home-container" ref="container" @wheel="handleWheel">
     <!-- 轮播 -->
-    <ul class="carousel-container"  :style="{marginTop}">
+    <ul class="carousel-container"  :style="{marginTop}" @transitionend="handleTransitionEnd">
       <li v-for="item in banners" :key="item.id">
-        <CarouselItem />
+        <CarouselItem :carousel="item"/>
       </li>
     </ul>
 
@@ -36,7 +36,8 @@ export default {
     return {
       banners: [],
       index: 0, // 当前显示第几张图片
-      containerHeight: 0 // 整个容器的高度
+      containerHeight: 0, // 整个容器的高度
+      switching: false, // 是否正在切换中
     }
   },
   components: {
@@ -53,11 +54,41 @@ export default {
   },
   mounted() {
     this.containerHeight = this.$refs.container.clientHeight;
+    window.addEventListener("resize", this.handleResize);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
   },
   methods: {
     // 切换轮播图
     switchTo(i) {
       this.index = i;
+    },
+    handleWheel(e) {
+      // 防止连续滚动
+      if(this.switching) {
+        return
+      }
+
+      if(e.deltaY === -200 && this.index > 0){
+        // 向上滚动
+        this.index --;
+        this.switching = true
+      }else if(e.deltaY === 200 && this.index < this.banners.length - 1) {
+        // 向下滚动
+        this.index ++;
+        this.switching = true
+      }
+
+    },
+    // 滚动动画结束后才能进行下一次滚动
+    handleTransitionEnd() {
+      this.switching = false
+    },
+    // 页面大小改变
+    handleResize() {
+      console.log('asda');
+      this.containerHeight = this.$refs.container.clientHeight;
     }
   }
 }
