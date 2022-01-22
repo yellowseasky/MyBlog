@@ -18,7 +18,6 @@
     <!-- 圆点 -->
     <ul class="indicator">
       <li v-for="(item, i) in banners" :key="item.id" :class="{active: i === index}" @click="switchTo(i)">
-        
       </li>
     </ul>
 
@@ -64,6 +63,7 @@ export default {
     switchTo(i) {
       this.index = i;
     },
+    // 鼠标滚轮
     handleWheel(e) {
       // 防止连续滚动
       if(this.switching) {
@@ -87,7 +87,6 @@ export default {
     },
     // 页面大小改变
     handleResize() {
-      console.log('asda');
       this.containerHeight = this.$refs.container.clientHeight;
     }
   }
@@ -102,6 +101,7 @@ export default {
   height: 100%;
   position: relative;
   overflow: hidden;
+
   .carousel-container {
     margin: 0;
     width: 100%;

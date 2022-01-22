@@ -2,7 +2,7 @@
   <div class="app-container">
     <Layout>
       <template #left>
-        <div class="left">
+        <div class="aside">
           <Side />
         </div>
       </template>
@@ -28,8 +28,8 @@ export default {
 @import "~@/styles/mixin.less";
 .app-container {
   .self-fill(fixed);
-  .left {
-    width: 300px;
+  .aside {
+    width: 250px;
     height: 100%;
   }
 }
