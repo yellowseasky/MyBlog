@@ -1,23 +1,23 @@
 <template>
-  <div class="home-container">
+  <div class="home-container" ref="container">
     <!-- 轮播 -->
-    <ul class="carousel-container">
+    <ul class="carousel-container"  :style="{marginTop}">
       <li v-for="item in banners" :key="item.id">
         <CarouselItem />
       </li>
     </ul>
 
     <!-- 上下箭头 -->
-    <div class="icon icon-up">
+    <div class="icon icon-up" v-show="index >= 1" @click="switchTo(index - 1)">
       <Icon type="arrowUp"/>
     </div>
-    <div class="icon icon-down">
+    <div class="icon icon-down" v-show="index < banners.length - 1" @click="switchTo(index + 1)">
       <Icon type="arrowDown"/>
     </div>
 
     <!-- 圆点 -->
     <ul class="indicator">
-      <li v-for="item in banners" :key="item.id">
+      <li v-for="(item, i) in banners" :key="item.id" :class="{active: i === index}" @click="switchTo(i)">
         
       </li>
     </ul>
@@ -34,16 +34,31 @@ import { getBanners } from '@/api/bannerApi';
 export default {
   data() {
     return {
-      banners: [1, 2, 3]
+      banners: [],
+      index: 0, // 当前显示第几张图片
+      containerHeight: 0 // 整个容器的高度
     }
   },
   components: {
     CarouselItem,
     Icon
   },
+  computed: {
+    marginTop() {
+      return -this.index * this.containerHeight + "px";
+    }
+  },
   async created() {
     this.banners = await getBanners();
-    console.log(this.banners);
+  },
+  mounted() {
+    this.containerHeight = this.$refs.container.clientHeight;
+  },
+  methods: {
+    // 切换轮播图
+    switchTo(i) {
+      this.index = i;
+    }
   }
 }
 </script>
@@ -55,11 +70,12 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
-  background: #000;
+  overflow: hidden;
   .carousel-container {
     margin: 0;
     width: 100%;
     height: 100%;
+    transition: 500ms;
     li {
       width: 100%;
       height: 100%;
@@ -119,8 +135,8 @@ export default {
   transform: translateY(-50%);
   right: 20px;
   li {
-    width: 7px;
-    height: 7px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     cursor: pointer;
     background-color: @words;

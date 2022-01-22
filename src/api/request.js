@@ -14,7 +14,7 @@ ins.interceptors.response.use(function (resp) {
     return null
   }
 
-  return resp.data
+  return resp.data.data
 })
 
 export default ins
