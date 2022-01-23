@@ -5,7 +5,8 @@
     @mousemove="handleMouseMove"
     @mouseleave="handleMouseLeave"
   >
-    <div class="carousel-img"
+    <div
+      class="carousel-img"
       ref="image"
       :style="imagePosition"
     >
@@ -87,7 +88,7 @@ export default {
       this.$refs.desc.clientWidth; // reflow
       this.$refs.desc.style.transition = "2s 1s";
       this.$refs.desc.style.width = this.descWidth + "px";
-    },
+    },                 
     // 图片已加载完成
     imgLoad() {
       this.showWords()

@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container" ref="container" @wheel="handleWheel">
+  <div v-loading="isLoading" class="home-container" ref="container" @wheel="handleWheel">
     <!-- 轮播 -->
     <ul class="carousel-container"  :style="{marginTop}" @transitionend="handleTransitionEnd">
       <li v-for="item in banners" :key="item.id">
@@ -17,8 +17,7 @@
 
     <!-- 圆点 -->
     <ul class="indicator">
-      <li v-for="(item, i) in banners" :key="item.id" :class="{active: i === index}" @click="switchTo(i)">
-      </li>
+      <li v-for="(item, i) in banners" :key="item.id" :class="{active: i === index}" @click="switchTo(i)"></li>
     </ul>
 
   </div>
@@ -33,6 +32,7 @@ import { getBanners } from '@/api/bannerApi';
 export default {
   data() {
     return {
+      isLoading: true,
       banners: [],
       index: 0, // 当前显示第几张图片
       containerHeight: 0, // 整个容器的高度
@@ -50,6 +50,7 @@ export default {
   },
   async created() {
     this.banners = await getBanners();
+    this.isLoading = false;
   },
   mounted() {
     this.containerHeight = this.$refs.container.clientHeight;

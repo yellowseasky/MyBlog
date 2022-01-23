@@ -4,8 +4,13 @@ import './styles/global.less'
 import router from '@/router'
 import '@/mock'
 
+// 注册全局组件
 import { showMessage } from './utils'
 Vue.prototype.$message = showMessage
+
+// 注册全局指令
+import vLoading from '@/directives/loading'
+Vue.directive("loading", vLoading)
 
 new Vue({
   router,
