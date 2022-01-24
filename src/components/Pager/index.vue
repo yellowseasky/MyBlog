@@ -2,9 +2,9 @@
   <!-- 总页数大于1才显示分页,否则不显示 -->
   <div class="pager-container" v-if="pageNumber > 1">
     <a :class="{disabled: current === 1}" @click="changePage(1)">|&lt;&lt;</a>
-    <a :class="{disabled: current === 1}" @click="changePage(1)">&lt;&lt;</a>
+    <a :class="{disabled: current === 1}" @click="changePage(current - 1)">&lt;&lt;</a>
     <a v-for="(v,i) in numbers" :key="i" :class="{active: v === current}" @click="changePage(v)">{{v}}</a>
-    <a :class="{disabled: current === pageNumber}" @click="changePage(pageNumber)">&gt;&gt;</a>
+    <a :class="{disabled: current === pageNumber}" @click="changePage(current + 1)">&gt;&gt;</a>
     <a :class="{disabled: current === pageNumber}" @click="changePage(pageNumber)">&gt;&gt;|</a>
   </div>
 </template>
@@ -63,8 +63,11 @@ export default {
   methods: {
     changePage(page) {
       // 向父组件发送事件
-      if(page < 0) page = 0
-      if(page > this.pageNumber) page = this.pageNumber
+      if(page < 0) page = 0;
+      if(page > this.pageNumber) {
+        console.log('到尽头了');
+        page = this.pageNumber
+      }
       if(page === this.current) return; // 重复点击则不抛出事件
       this.$emit('changePage', page);
     }

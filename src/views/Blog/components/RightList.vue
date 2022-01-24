@@ -1,8 +1,23 @@
 <template>
   <ul class="right-list-comtainer">
-    <li v-for="(item, i) in list" :key="i" >
-      <span :class="{ active: item.isSelect }" @click="handleClick(item)">{{item.name}}</span>
-      <!-- 显示当前组件 -->
+    <li
+      v-for="(item, i) in list"
+      :key="i"
+    >
+      <span
+        :class="{ active: item.isSelect }"
+        @click="handleClick(item)"
+      >{{item.name}}</span>
+
+      <span
+        v-if="item.aside"
+        @click="handleClick(item)"
+        class="aside"
+        :class="{ active: item.isSelect }"
+      >{{ item.aside }}
+      </span>
+
+      <!-- 显示当前组件,组件递归 -->
       <RightList :list="item.children" @select="handleClick" />
     </li>
   </ul>
@@ -20,7 +35,9 @@ export default {
   },
   methods: {
     handleClick(item) {
-      this.$emit("select", item)
+      if(!item.isSelect) {
+        this.$emit("select", item)
+      }
     }
   }
 }
@@ -39,10 +56,17 @@ export default {
     min-height: 40px;
     line-height: 40px;
     cursor: pointer;
+    font-weight: bold;
+    color: @lightWords;
     .active {
       color: @warn;
       font-weight: bold;
     }
   }
+}
+.aside {
+  font-size: 12px;
+  margin-left: 1em;
+  color: @gray;
 }
 </style>

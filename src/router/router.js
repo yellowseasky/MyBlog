@@ -12,7 +12,12 @@ export default [
   },
   {
     name: 'Blog',
-    path: '/Blog',
+    path: '/article',
+    component: Blog
+  },
+  {
+    name: 'CategoryBlog',
+    path: '/article/cate/:categoryId',
     component: Blog
   },
   {

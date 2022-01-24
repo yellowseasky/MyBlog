@@ -58,8 +58,8 @@ export default {
   },
   methods: {
     // 创建混入函数获取数据
-    async fetchData() {
-      return await getBanners()
+    fetchData() {
+      return getBanners()
     },
     // 切换轮播图
     switchTo(i) {
