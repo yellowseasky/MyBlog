@@ -2,7 +2,7 @@
   <div v-loading="isLoading" class="home-container" ref="container" @wheel="handleWheel">
     <!-- 轮播 -->
     <ul class="carousel-container"  :style="{marginTop}" @transitionend="handleTransitionEnd">
-      <li v-for="item in banners" :key="item.id">
+      <li v-for="item in data" :key="item.id">
         <CarouselItem :carousel="item"/>
       </li>
     </ul>
@@ -11,13 +11,13 @@
     <div class="icon icon-up" v-show="index >= 1" @click="switchTo(index - 1)">
       <Icon type="arrowUp"/>
     </div>
-    <div class="icon icon-down" v-show="index < banners.length - 1" @click="switchTo(index + 1)">
+    <div class="icon icon-down" v-show="index < data.length - 1" @click="switchTo(index + 1)">
       <Icon type="arrowDown"/>
     </div>
 
     <!-- 圆点 -->
     <ul class="indicator">
-      <li v-for="(item, i) in banners" :key="item.id" :class="{active: i === index}" @click="switchTo(i)"></li>
+      <li v-for="(item, i) in data" :key="item.id" :class="{active: i === index}" @click="switchTo(i)"></li>
     </ul>
 
   </div>
@@ -28,12 +28,12 @@
 import CarouselItem from './Carouselitem';
 import Icon from '@/components/Icon'
 import { getBanners } from '@/api/bannerApi';
+import fetchData from '@/mixins/fetchData'
 
 export default {
+  mixins: [fetchData([])],
   data() {
     return {
-      isLoading: true,
-      banners: [],
       index: 0, // 当前显示第几张图片
       containerHeight: 0, // 整个容器的高度
       switching: false, // 是否正在切换中
@@ -48,10 +48,7 @@ export default {
       return -this.index * this.containerHeight + "px";
     }
   },
-  async created() {
-    this.banners = await getBanners();
-    this.isLoading = false;
-  },
+
   mounted() {
     this.containerHeight = this.$refs.container.clientHeight;
     window.addEventListener("resize", this.handleResize);
@@ -60,6 +57,10 @@ export default {
     window.removeEventListener("resize", this.handleResize);
   },
   methods: {
+    // 创建混入函数获取数据
+    async fetchData() {
+      return await getBanners()
+    },
     // 切换轮播图
     switchTo(i) {
       this.index = i;
@@ -75,7 +76,7 @@ export default {
         // 向上滚动
         this.index --;
         this.switching = true
-      }else if(e.deltaY === 200 && this.index < this.banners.length - 1) {
+      }else if(e.deltaY === 200 && this.index < this.data.length - 1) {
         // 向下滚动
         this.index ++;
         this.switching = true
