@@ -24,10 +24,12 @@ export default {
       const totalArticleCount = this.data.reduce((a, b) =>
         a + b.articleCount
       , 0)
+      // 把全部的属性添加到数据
       const result = [
         {name: '全部', id : -1, articleCount: totalArticleCount},
         ...this.data
       ]
+      // 在原来的数据上加上isSelect和aside属性
       return result.map(item => ({
         ...item,
         'isSelect': item.id === this.getCategoryId,
@@ -39,6 +41,7 @@ export default {
     async fetchData() {
       return await getCategoryId()
     },
+    // 文章分类点击事件
     handleClick(item) {
       const query = {
         page: 1,

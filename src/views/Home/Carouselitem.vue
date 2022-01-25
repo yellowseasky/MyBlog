@@ -145,8 +145,8 @@ export default {
     overflow: hidden;
     text-shadow: 1px 0 0 rgba(0, 0, 0, 0.5), -1px 0 0 rgba(0, 0, 0, 0.5),
     0 1px 0 rgba(0, 0, 0, 0.5), 0 -1px 0 rgba(0, 0, 0, 0.5);
-      white-space: nowrap;
-      opacity: 0;
+    white-space: nowrap;
+    opacity: 0;
   }
   .title {
     top: calc(50% - 40px);

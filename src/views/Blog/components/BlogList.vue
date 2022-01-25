@@ -4,19 +4,42 @@
       <li v-for="item in data.rows" :key="item.id">
         <!-- 缩略图 -->
         <div class="thumb" v-if="item.thumb">
-          <a href="">
+          <RouterLink
+            :to="{
+              name: 'BlogDetail',
+              params: {
+                id: item.id
+              }
+            }"
+          >
             <img :src="item.thumb" alt="你好" title="带我弟啊">
-          </a>
+          </RouterLink>
         </div>
         <div class="main">
-          <a href="">
+          <RouterLink
+            :to="{
+              name: 'BlogDetail',
+              params: {
+                id: item.id
+              }
+            }"
+          >
             <h2>{{ item.title }}</h2>
-          </a>
+          </RouterLink>
           <div class="aside">
             <span>日期: {{ formatDate(item.createDate) }}</span>
             <span>浏览: {{ item.scanNumber }}</span>
             <span>评论: {{ item.commentNumber }}</span>
-            <a href="" class="">{{ item.category.name }}</a>
+            <RouterLink 
+              :to="{
+                name: 'CategoryBlog',
+                params: {
+                  categoryId: item.category.id
+                }
+              }"
+            >
+              {{ item.category.name }}
+            </RouterLink>
           </div>
           <div class="desc">
             {{ item.description }}
@@ -53,6 +76,7 @@ export default {
     }
   },
   watch: {
+    // 监听路由变换
     async $route() {
       this.isLoading = true;
       this.data = await this.fetchData();
@@ -61,6 +85,7 @@ export default {
     }
   },
   methods: {
+    // 获取数据
     async fetchData() {
       return await getBlogs(
         this.routeInfo.page,
@@ -69,6 +94,7 @@ export default {
       );
     },
     formatDate,
+    // 分页点击事件
     changePage(newPage) {
       const query = {
         page: newPage,
