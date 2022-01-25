@@ -3,6 +3,7 @@
     <Layout v-if="data">
       <div class="main-contaienr">
         <BlogDetail :blog="data" />
+        <BlogComment v-if="!isLoading" />
       </div>
       <template #right>
         <div class="right-container">
@@ -19,12 +20,13 @@ import { getBlog } from "@/api/blog"
 import Layout from "@/components/Layout"
 import BlogDetail from "./components/BlogDetail"
 import BlogTOC from "./components/BlogTOC"
-
+import BlogComment from "./components/BlogComment"
 export default {
   components: {
     Layout,
     BlogDetail,
-    BlogTOC
+    BlogTOC,
+    BlogComment
   },
   mixins: [fetchData(null)],
   methods: {

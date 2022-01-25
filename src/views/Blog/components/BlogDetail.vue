@@ -4,7 +4,7 @@
       {{blog.title}}
     </h2>
     <div class="aside">
-      <span>时间: {{formatData(blog.createDate)}}</span>
+      <span>时间: {{formatDate(blog.createDate)}}</span>
       <span>浏览: {{ blog.scanNumber }}</span>
       <a href="">评论数: {{ blog.commentNumber }}</a>
       <a href="">{{ blog.category.name }}</a>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import formatData from "@/utils/formatData"
+import { formatDate } from "@/utils"
 import "highlight.js/styles/github.css";
 
 import "@/styles/markdown.css";
@@ -26,7 +26,7 @@ export default {
     }
   },
   methods: {
-    formatData
+    formatDate
   }
 }
 </script>
