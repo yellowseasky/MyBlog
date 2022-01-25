@@ -13,7 +13,7 @@
 <script>
 import MessageArea from "@/components/MessageArea"
 import fetchData from "@/mixins/fetchData"
-import { getComments } from "@/api/blog"
+import { getComments, postComment } from "@/api/blog"
 export default {
   mixins: [fetchData({})],
   components: {
@@ -29,8 +29,15 @@ export default {
     async fetchData() {
       return await getComments(this.$route.params.id, this.page, this.limit)
     },
-    handleSubmit() {
-
+    handleSubmit(formData, callback) {
+      postComment({
+        id: this.$route.params.id,
+        ...formData
+      }).then(res => {
+        this.data.rows.unshift(res)
+        this.data.total++;
+        callback("评论成功"); // 去执行子组件
+      })
     }
   }
 }

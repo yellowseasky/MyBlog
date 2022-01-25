@@ -1,7 +1,7 @@
 <template>
   <div class="message-area-container">
     <div class="data-from-container">
-      <DataFrom />
+      <DataFrom v-on="$listeners" />
     </div>
     <h3>
       {{title}}

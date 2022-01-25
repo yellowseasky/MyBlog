@@ -1,12 +1,14 @@
 <template>
   <form
+    id="data-form-container"
     class="data-form-container"
-    @click.prevent="handleSubmit"
+    ref="form"
+    @submit.prevent="handleSubmit"
   >
     <div class="form-item">
       <div class="input-area">
         <input type="text" v-model="formData.nickName" maxlength="10" placeholder="用户昵称">
-        <span class="tip">1/10</span>
+        <span class="tip">{{nameLength}}/10</span>
       </div>
       <div class="error">{{error.nickName}}</div>
     </div>
@@ -17,7 +19,7 @@
           placeholder="输入内容"
           v-model="formData.content"
         ></textarea>
-        <span class="tip">1/300</span>
+        <span class="tip">{{contentLength}}/300</span>
       </div>
       <div class="error">{{error.content}}</div>
     </div>
@@ -43,13 +45,40 @@ export default {
         nickName: "",
         content: ""
       },
-      isSubmiting: false
+      isSubmiting: false // 按钮的状态
+    }
+  },
+  computed: {
+    nameLength() {
+      return this.formData.nickName.length
+    },
+    contentLength() {
+      return this.formData.content.length
     }
   },
   methods: {
     handleSubmit() {
-      this.error.nickName = this.nickName ? "" : "请输入用户昵称";
-      this.error.content = this.content ? "" : "请输入用户昵称";
+      this.error.nickName = this.formData.nickName ? "" : "请输入用户昵称";
+      this.error.content = this.formData.content ? "" : "请输入用户昵称";
+
+      if(this.error.nickName&&this.error.content) {
+        // 有错误
+        return ;
+      }
+      this.isSubmiting = true;
+      this.$emit("submit", this.formData, (successMsg) => {
+        this.$message({
+          content: successMsg,
+          type: "success",
+          duration: 1000,
+          container: this.$refs.form,
+          callback:() => {
+            this.isSubmiting = false
+            this.formData.nickname = "";
+            this.formData.content = "";
+          }
+        })
+      })// 让父组件来处理
     }
   }
 }
