@@ -25,10 +25,48 @@ export default {
       limit: 10
     }
   },
+  computed: {
+    hasMore() {
+      return this.data.total > this.data.rows.length;
+    }
+  },
+  created() {
+    this.$bus.$on("mainScroll", this.handleScroll);
+  },
+  destroyed() {
+    this.$bus.$off("mainScroll", this.handleScroll);
+  },
   methods: {
+    // 处理下载加载更多
+    handleScroll(dom) {
+      // 防止拼命加载
+      if(this.isLoading || !dom) {
+        return ;
+      }
+      const rang = 100; // 顶一个可接受的范围，在这个范围内都算达到了底部
+      const move = Math.abs(dom.clientHeight + dom.scrollTop - dom.scrollHeight);
+      console.log(move);
+      if(move <= rang) {
+        this.fetchMore()
+      }
+    },
+    // 加载下一页
+    async fetchMore() {
+      if(!this.hasMore) {
+        // 没有数据了
+        return;
+      }
+      this.isLoading = true
+      this.page++;
+      const resp = await this.fetchData();
+      this.data.total = resp.total;
+      this.data.rows = this.data.rows.concat(resp.rows);
+      this.isLoading = false;
+    },
     async fetchData() {
       return await getComments(this.$route.params.id, this.page, this.limit)
     },
+    // 处理发表评论事件
     handleSubmit(formData, callback) {
       postComment({
         id: this.$route.params.id,

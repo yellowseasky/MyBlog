@@ -7,7 +7,15 @@
       <span>时间: {{formatDate(blog.createDate)}}</span>
       <span>浏览: {{ blog.scanNumber }}</span>
       <a href="#data-form-container">评论数: {{ blog.commentNumber }}</a>
-      <a href="">{{ blog.category.name }}</a>
+      <RouterLink 
+        :to="{
+        name: 'CategoryBlog',
+        params: {
+          categoryId: blog.category.id
+        }
+        }">
+        {{ blog.category.name }}
+      </RouterLink>
     </div>
     <div class="markdown-body" v-html="blog.htmlContent"></div>
   </div>

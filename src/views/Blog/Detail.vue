@@ -35,8 +35,8 @@ export default {
     this.$refs.mainContainer.removeEventListener("scroll", this.handleScroll);
   },
   updated() {
+    // 页面刷新后会根据路由滑动对应的地方
     const hash = location.hash;
-    console.log(hash);
     location.hash = "";
     setTimeout(() => {
       location.hash = hash;

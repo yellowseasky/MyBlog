@@ -7,7 +7,8 @@
       {{title}}
       <span>{{subTitle}}</span>
     </h3>
-    <DataList :list="list" v-loading="isListLoading"/>
+    <DataList :list="list" />
+    <div class="loading" v-loading="isListLoading"></div>
   </div>
 </template>
 
@@ -33,7 +34,7 @@ export default {
     isListLoading: {
       type: Boolean
     }
-  }
+  },
 }
 </script>
 
