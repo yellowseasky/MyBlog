@@ -3,6 +3,7 @@ import App from './App.vue'
 import './styles/global.less'
 import router from '@/router'
 import '@/mock'
+import "./eventBus"
 
 // 注册全局组件
 import { showMessage } from './utils'

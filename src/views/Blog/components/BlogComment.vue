@@ -45,6 +45,7 @@ export default {
 
 <style scoped lang="less">
 .blog-comment-container {
+  position: relative;
   margin: 30px 0;
 }
 </style>

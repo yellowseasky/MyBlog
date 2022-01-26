@@ -1,17 +1,15 @@
 <template>
-  <div class="blog-detail-container" v-loading="isLoading">
-    <Layout v-if="data">
-      <div class="main-contaienr">
-        <BlogDetail :blog="data" />
-        <BlogComment v-if="!isLoading" />
+  <Layout>
+    <div ref="mainContainer" class="main-container" v-loading="isLoading">
+      <BlogDetail :blog="data" v-if="data"/>
+      <BlogComment v-if="!isLoading" />
+    </div>
+    <template #right>
+      <div class="right-container" v-loading="isLoading">
+        <BlogTOC :toc="data.toc" v-if="data"/>
       </div>
-      <template #right>
-        <div class="right-container">
-          <BlogTOC :blog="data.toc"/>
-        </div>
-      </template>
-    </Layout>
-  </div>
+    </template>
+  </Layout>
 </template>
 
 <script>
@@ -21,6 +19,7 @@ import Layout from "@/components/Layout"
 import BlogDetail from "./components/BlogDetail"
 import BlogTOC from "./components/BlogTOC"
 import BlogComment from "./components/BlogComment"
+
 export default {
   components: {
     Layout,
@@ -29,26 +28,42 @@ export default {
     BlogComment
   },
   mixins: [fetchData(null)],
+  mounted() {
+    this.$refs.mainContainer.addEventListener("scroll", this.handleScroll);
+  },
+  beforeDestroy() {
+    this.$refs.mainContainer.removeEventListener("scroll", this.handleScroll);
+  },
+  updated() {
+    const hash = location.hash;
+    console.log(hash);
+    location.hash = "";
+    setTimeout(() => {
+      location.hash = hash;
+    }, 50);
+  },
   methods: {
     async fetchData() {
       return await getBlog(this.$route.params.id)
+    },
+    handleScroll() {
+      this.$bus.$emit("mainScroll", this.$refs.mainContainer)
     }
   }
 }
 </script>
 
 <style scoped lang="less">
-.main-contaienr {
-  height: 100vh;
-  width: 100%;
+.main-container {
+  overflow-y: scroll;
+  height: 100%;
   box-sizing: border-box;
   padding: 20px;
   position: relative;
-  scroll-behavior: smooth;
+  width: 100%;
   overflow-x: hidden;
-  overflow-y: scroll;
+  scroll-behavior: smooth;
 }
-
 .right-container {
   width: 300px;
   height: 100%;
