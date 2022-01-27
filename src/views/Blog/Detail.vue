@@ -29,9 +29,12 @@ export default {
   },
   mixins: [fetchData(null)],
   mounted() {
+    this.$bus.$on("setMainScroll", this.handleMainScroll)
     this.$refs.mainContainer.addEventListener("scroll", this.handleScroll);
   },
   beforeDestroy() {
+    this.$bus.$emit("mainScroll")
+    this.$bus.$off("setMainScroll", this.handleMainScroll)
     this.$refs.mainContainer.removeEventListener("scroll", this.handleScroll);
   },
   updated() {
@@ -48,6 +51,9 @@ export default {
     },
     handleScroll() {
       this.$bus.$emit("mainScroll", this.$refs.mainContainer)
+    },
+    handleMainScroll(val) {
+      this.$refs.mainContainer.scrollTop = val
     }
   }
 }

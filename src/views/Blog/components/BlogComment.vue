@@ -45,7 +45,6 @@ export default {
       }
       const rang = 100; // 顶一个可接受的范围，在这个范围内都算达到了底部
       const move = Math.abs(dom.clientHeight + dom.scrollTop - dom.scrollHeight);
-      console.log(move);
       if(move <= rang) {
         this.fetchMore()
       }

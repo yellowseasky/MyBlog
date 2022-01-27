@@ -10,16 +10,20 @@
         <RouterView />
       </template>
     </Layout>
+    <ToTop />
   </div>
 </template>
 
 <script>
 import Layout from '@/components/Layout'
 import Side from '@/components/SiteAside'
+import ToTop from "@/components/ToTop"
+
 export default {
   components: {
     Layout,
-    Side
+    Side,
+    ToTop
   },
 }
 </script>

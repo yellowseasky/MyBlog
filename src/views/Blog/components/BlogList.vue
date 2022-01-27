@@ -84,7 +84,22 @@ export default {
       this.isLoading = false;
     }
   },
+  mounted() {
+    this.$bus.$on("setMainScroll", this.handleMainScroll)
+    this.$refs.container.addEventListener("scroll", this.handleScroll);
+  },
+  beforeDestroy() {
+    this.$bus.$emit("mainScroll")
+    this.$bus.$off("setMainScroll", this.handleMainScroll)
+    this.$refs.container.removeEventListener("scroll", this.handleScroll);
+  },
   methods: {
+    handleScroll() {
+      this.$bus.$emit("mainScroll", this.$refs.container)
+    },
+    handleMainScroll(val) {
+      this.$refs.container.scrollTop = val
+    },
     // 获取数据
     async fetchData() {
       return await getBlogs(
