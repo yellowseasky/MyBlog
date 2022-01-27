@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import fetchData from "@/mixins/fetchData"
+import { fetchData, mainScroll } from '@/mixins'
 import { getBlog } from "@/api/blog"
 import Layout from "@/components/Layout"
 import BlogDetail from "./components/BlogDetail"
@@ -27,16 +27,7 @@ export default {
     BlogTOC,
     BlogComment
   },
-  mixins: [fetchData(null)],
-  mounted() {
-    this.$bus.$on("setMainScroll", this.handleMainScroll)
-    this.$refs.mainContainer.addEventListener("scroll", this.handleScroll);
-  },
-  beforeDestroy() {
-    this.$bus.$emit("mainScroll")
-    this.$bus.$off("setMainScroll", this.handleMainScroll)
-    this.$refs.mainContainer.removeEventListener("scroll", this.handleScroll);
-  },
+  mixins: [fetchData(null), mainScroll("mainContainer")],
   updated() {
     // 页面刷新后会根据路由滑动对应的地方
     const hash = location.hash;
@@ -49,12 +40,6 @@ export default {
     async fetchData() {
       return await getBlog(this.$route.params.id)
     },
-    handleScroll() {
-      this.$bus.$emit("mainScroll", this.$refs.mainContainer)
-    },
-    handleMainScroll(val) {
-      this.$refs.mainContainer.scrollTop = val
-    }
   }
 }
 </script>

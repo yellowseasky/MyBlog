@@ -54,7 +54,7 @@
 
 <script>
 import Pager from '@/components/Pager'
-import fetchData from '@/mixins/fetchData.js'
+import { fetchData, mainScroll } from '@/mixins'
 import { getBlogs } from '@/api/blog.js';
 import { formatDate } from "@/utils";
 
@@ -62,7 +62,7 @@ export default {
   components: {
     Pager
   },
-  mixins: [fetchData({})],
+  mixins: [fetchData({}), mainScroll("container")],
   computed: {
     routeInfo() {
       const categoryId = +this.$route.params.categoryId || -1;
@@ -84,22 +84,7 @@ export default {
       this.isLoading = false;
     }
   },
-  mounted() {
-    this.$bus.$on("setMainScroll", this.handleMainScroll)
-    this.$refs.container.addEventListener("scroll", this.handleScroll);
-  },
-  beforeDestroy() {
-    this.$bus.$emit("mainScroll")
-    this.$bus.$off("setMainScroll", this.handleMainScroll)
-    this.$refs.container.removeEventListener("scroll", this.handleScroll);
-  },
   methods: {
-    handleScroll() {
-      this.$bus.$emit("mainScroll", this.$refs.container)
-    },
-    handleMainScroll(val) {
-      this.$refs.container.scrollTop = val
-    },
     // 获取数据
     async fetchData() {
       return await getBlogs(
