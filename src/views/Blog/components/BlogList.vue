@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-list-container" ref="container" v-loading="isLoading">
+  <div class="blog-list-container" ref="mainContainer" v-loading="isLoading">
     <ul>
       <li v-for="item in data.rows" :key="item.id">
         <!-- 缩略图 -->
@@ -12,7 +12,7 @@
               }
             }"
           >
-            <img :src="item.thumb" :alt="item.title" :title="item.title">
+            <img v-lazy="item.thumb" :alt="item.title" :title="item.title">
           </RouterLink>
         </div>
         <div class="main">
@@ -62,7 +62,7 @@ export default {
   components: {
     Pager
   },
-  mixins: [fetchData({}), mainScroll("container")],
+  mixins: [fetchData({}), mainScroll("mainContainer")],
   computed: {
     routeInfo() {
       const categoryId = +this.$route.params.categoryId || -1;
@@ -80,7 +80,7 @@ export default {
     async $route() {
       this.isLoading = true;
       this.data = await this.fetchData();
-      this.$refs.container.scrollTop = 0;
+      this.$refs.mainContainer.scrollTop = 0;
       this.isLoading = false;
     }
   },
